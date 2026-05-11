@@ -646,7 +646,7 @@ export function AutoEvalDataset({ onResults, results }: AutoEvalDatasetProps) {
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                             <div className="bg-white/70 backdrop-blur-sm p-4 rounded-xl border border-white/50 shadow-sm">
                                 <div className="flex items-center gap-2 mb-2">
                                     <Target className="w-4 h-4 text-blue-600" />
@@ -1105,10 +1105,10 @@ export function AutoEvalDataset({ onResults, results }: AutoEvalDatasetProps) {
                         </Button>
                     </div>
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     {data &&
                         getOrderedDimensions(data.dimensions).map((dimension) => (
-                            <div key={dimension} className="flex items-center space-x-2">
+                            <div key={dimension} className="flex items-start sm:items-center space-x-3">
                                 <Checkbox
                                     id={dimension}
                                     checked={selectedDimensions.includes(dimension)}

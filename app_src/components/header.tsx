@@ -21,8 +21,8 @@ export function Header() {
                     </div>
 
                     {/* Title and tagline centered */}
-                    <div className="flex-1 text-center">
-                        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent leading-tight">
+                    <div className="flex-1 text-center px-2 sm:px-4">
+                        <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent leading-tight">
                             Pedagogical AI Evaluation System
                         </h1>
                         <div className="flex items-center justify-center gap-2 mt-3">
@@ -32,7 +32,7 @@ export function Header() {
                     </div>
 
                     {/* Empty space on the right for balance */}
-                    <div className="w-[85px] flex-shrink-0"></div>
+                    <div className="w-[85px] flex-shrink-0 hidden md:block"></div>
                 </div>
             </div>
         </header>

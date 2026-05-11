@@ -36,29 +36,27 @@ export default function AITutorPlatform() {
                     }
                 >
                     <Tabs defaultValue="autoeval-dataset" className="w-full">
-                        <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-0 h-auto mb-8 bg-white/80 backdrop-blur-sm p-1.5 rounded-xl shadow-lg border border-gray-200/50">
+                        <TabsList className="grid w-full grid-cols-1 md:grid-cols-3 gap-2 md:gap-1 lg:gap-2 h-auto mb-8 bg-white/80 backdrop-blur-sm p-1.5 rounded-xl shadow-lg border border-gray-200/50">
                             <TabsTrigger
                                 value="autoeval-dataset"
-                                className="flex items-center gap-2 px-4 py-3 rounded-lg font-medium text-sm transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-400 data-[state=active]:to-emerald-500 data-[state=active]:text-white data-[state=active]:shadow-md hover:bg-green-50 hover:text-green-700 hover:shadow-sm text-gray-700"
+                                className="flex items-center justify-center gap-2 px-2 lg:px-4 py-2 lg:py-3 rounded-lg font-medium text-xs sm:text-sm transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-400 data-[state=active]:to-emerald-500 data-[state=active]:text-white data-[state=active]:shadow-md hover:bg-green-50 hover:text-green-700 hover:shadow-sm text-gray-700"
                             >
-                                <Zap className="w-4 h-4" />
-                                <span className="font-semibold">Automated Evaluation</span>
+                                <Zap className="w-4 h-4 flex-shrink-0" />
+                                <span className="font-semibold whitespace-normal md:whitespace-nowrap">Automated Evaluation</span>
                             </TabsTrigger>
                             <TabsTrigger
                                 value="llmeval-dataset"
-                                className="flex items-center gap-2 px-4 py-3 rounded-lg font-medium text-sm transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-400 data-[state=active]:to-pink-500 data-[state=active]:text-white data-[state=active]:shadow-md hover:bg-purple-50 hover:text-purple-700 hover:shadow-sm text-gray-700"
+                                className="flex items-center justify-center gap-2 px-2 lg:px-4 py-2 lg:py-3 rounded-lg font-medium text-xs sm:text-sm transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-400 data-[state=active]:to-pink-500 data-[state=active]:text-white data-[state=active]:shadow-md hover:bg-purple-50 hover:text-purple-700 hover:shadow-sm text-gray-700"
                             >
-                                <Brain className="w-4 h-4" />
-                                <span className="font-semibold">LLM Evaluation</span>
+                                <Brain className="w-4 h-4 flex-shrink-0" />
+                                <span className="font-semibold whitespace-normal md:whitespace-nowrap">LLM Evaluation</span>
                             </TabsTrigger>
                             <TabsTrigger
                                 value="dataset-visualizer"
-                                className="flex items-center gap-2 px-4 py-3 rounded-lg font-medium text-sm transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-400 data-[state=active]:to-orange-500 data-[state=active]:text-white data-[state=active]:shadow-md hover:bg-amber-50 hover:text-amber-700 hover:shadow-sm text-gray-700"
+                                className="flex items-center justify-center gap-2 px-2 lg:px-4 py-2 lg:py-3 rounded-lg font-medium text-xs sm:text-sm transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-400 data-[state=active]:to-orange-500 data-[state=active]:text-white data-[state=active]:shadow-md hover:bg-amber-50 hover:text-amber-700 hover:shadow-sm text-gray-700"
                             >
-                                <BarChart3 className="w-4 h-4" />
-                                {/* <span>Visualizer</span> */}
+                                <BarChart3 className="w-4 h-4 flex-shrink-0" />
                                 <span className="font-semibold">Visualizer</span>
-
                             </TabsTrigger>
                         </TabsList>
 
