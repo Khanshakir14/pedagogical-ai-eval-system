@@ -715,7 +715,7 @@ export function AutoEvalDataset({ onResults, results }: AutoEvalDatasetProps) {
                             <MessageSquare className="w-5 h-5" />
                             Context
                         </CardTitle>
-                        <div className="flex gap-2 text-sm text-gray-600">
+                        <div className="flex flex-wrap gap-2 text-sm text-gray-600 mt-2">
                             <Badge variant="outline">{selectedTopic}</Badge>
                         </div>
                     </CardHeader>
@@ -805,7 +805,7 @@ export function AutoEvalDataset({ onResults, results }: AutoEvalDatasetProps) {
                                     <Users className="w-5 h-5" />
                                     Tutor Response
                                 </CardTitle>
-                                <div className="flex gap-2 text-sm text-gray-600">
+                                <div className="flex flex-wrap gap-2 text-sm text-gray-600 mt-2">
                                     <Badge variant="outline">{selectedModel}</Badge>
                                     <Badge variant="outline">{selectedTopic}</Badge>
                                 </div>
@@ -892,7 +892,7 @@ export function AutoEvalDataset({ onResults, results }: AutoEvalDatasetProps) {
                                 <span className="text-sm font-medium text-gray-700">
                                     Would you consider this response useful as a student?
                                 </span>
-                                <div className="flex gap-3">
+                                <div className="flex flex-wrap gap-3">
                                     <Button
                                         variant={selectedRating === "helpful" ? "default" : "outline"}
                                         size="sm"
@@ -1089,9 +1089,9 @@ export function AutoEvalDataset({ onResults, results }: AutoEvalDatasetProps) {
                 )}
 
             <div className="space-y-3">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
                     <Label>Evaluation Dimensions</Label>
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap gap-2">
                         <Button
                             variant="outline"
                             size="sm"

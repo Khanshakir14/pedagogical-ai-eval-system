@@ -206,8 +206,8 @@ export function ComparisonChart({
 
         return (
             <div className="flex flex-col items-center w-full">
-                <div className="flex items-start gap-8 w-full max-w-5xl">
-                    <div className="flex-1 flex justify-center">
+                <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8 w-full max-w-5xl">
+                    <div className="flex-1 flex justify-center w-full overflow-x-auto pb-4">
                         <svg width={400} height={400} className="border rounded-lg bg-white shadow-sm">
                             {/* Grid circles */}
                             {[0.2, 0.4, 0.6, 0.8, 1.0].map((scale) => (
@@ -434,10 +434,10 @@ export function ComparisonChart({
 
                         return (
                             <div key={item.dimension} className="space-y-2">
-                                <div className="flex items-center gap-4">
-                                    <div className="w-32 text-sm font-semibold text-gray-700 text-right">{item.dimension}</div>
-                                    <div className="flex-1 relative">
-                                        <div className="flex items-center h-8">
+                                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
+                                    <div className="w-full sm:w-32 text-sm font-semibold text-gray-700 sm:text-right">{item.dimension}</div>
+                                    <div className="flex-1 relative w-full">
+                                        <div className="flex items-center h-8 w-full">
                                             <div className="flex-1 bg-gray-100 rounded-full h-6 relative overflow-hidden">
                                                 <div
                                                     className={`h-6 rounded-full transition-all duration-700 ease-out ${isTie ? "bg-gray-400" : isPositive ? "bg-green-500" : "bg-red-500"
@@ -471,11 +471,11 @@ export function ComparisonChart({
                                     </div>
                                 </div>
                                 {/* Winner indication with scores */}
-                                <div className="flex items-center gap-4">
-                                    <div className="w-32"></div>
-                                    <div className="flex-1">
-                                        <div className="flex items-center justify-between text-xs text-gray-600 bg-gray-50 px-3 py-2 rounded">
-                                            <div className="flex items-center gap-4">
+                                <div className="flex items-center gap-2 sm:gap-4">
+                                    <div className="hidden sm:block w-32"></div>
+                                    <div className="flex-1 w-full">
+                                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between text-xs text-gray-600 bg-gray-50 px-3 py-2 rounded gap-2 sm:gap-0">
+                                            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
                                                 <span>
                                                     <strong>{firstTutorName}:</strong> {formatScoreValue(item.firstScoreOriginal)}
                                                 </span>
@@ -525,7 +525,7 @@ export function ComparisonChart({
                     </CardContent>
                 </Card>
                 {/* Win/Loss/Tie Statistics */}
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
                         <CardContent className="p-4 text-center">
                             <div className="text-3xl font-bold text-blue-600">{tutor1Wins}</div>
@@ -567,7 +567,7 @@ export function ComparisonChart({
             {/* This div will be captured by the download function - includes tabs and content */}
             <div id="comparison-full-chart" className="w-full">
                 <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-                    <TabsList className={`grid w-full ${hideSummary ? "grid-cols-3" : "grid-cols-4"} mb-6`}>
+                    <TabsList className={`grid w-full ${hideSummary ? "grid-cols-2 lg:grid-cols-3" : "grid-cols-2 lg:grid-cols-4"} gap-2 h-auto mb-6`}>
                         {tabsToShow.map((tabKey) => {
                             const tab = tabsConfig[tabKey as keyof typeof tabsConfig]
                             return (
@@ -739,7 +739,7 @@ export function SingleResponseRating({
                     </div>
                 </div>
                 {/* Rating Buttons */}
-                <div className="flex justify-center gap-4 pt-4 border-t">
+                <div className="flex justify-center gap-4 pt-4 border-t flex-wrap">
                     <button
                         onClick={() => handleRating("helpful")}
                         className={`inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 ${userRating === "helpful"

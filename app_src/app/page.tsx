@@ -36,7 +36,7 @@ export default function AITutorPlatform() {
                     }
                 >
                     <Tabs defaultValue="autoeval-dataset" className="w-full">
-                        <TabsList className="grid w-full grid-cols-3 mb-8 bg-white/80 backdrop-blur-sm p-1.5 rounded-xl shadow-lg border border-gray-200/50">
+                        <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-0 h-auto mb-8 bg-white/80 backdrop-blur-sm p-1.5 rounded-xl shadow-lg border border-gray-200/50">
                             <TabsTrigger
                                 value="autoeval-dataset"
                                 className="flex items-center gap-2 px-4 py-3 rounded-lg font-medium text-sm transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-400 data-[state=active]:to-emerald-500 data-[state=active]:text-white data-[state=active]:shadow-md hover:bg-green-50 hover:text-green-700 hover:shadow-sm text-gray-700"
