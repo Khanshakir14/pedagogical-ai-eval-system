@@ -1,6 +1,6 @@
 "use client"
 
-import { DIMENSION_CONFIG, getDimensionAbbreviation, getDimensionDisplayName } from "@/lib/dimension-config"
+import { getDimensionAbbreviation, getDimensionDisplayName } from "@/lib/dimension-config"
 
 interface DatasetSpiderChartFlexibleProps {
     data: { [model: string]: { [dimension: string]: number } }
@@ -25,34 +25,38 @@ export function DatasetSpiderChartFlexible({
         return <div className="text-center py-8 text-gray-500">Please select at least one model to display</div>
     }
 
-    // Use selected dimensions instead of fixed ones
     const dimensions = selectedDimensions
 
-    const dimensionNames = DIMENSION_CONFIG.ABBREVIATIONS
-
-    // Increased size and better spacing for labels
     const svgWidth = 700
     const svgHeight = 600
     const center = { x: svgWidth / 2, y: svgHeight / 2 }
-    const radius = 140
-    const labelRadius = 180
-    const angleStep = (2 * Math.PI) / dimensions.length
+    const radius = 160
+    const labelRadius = 210
+
+    // For exactly 2 dimensions: place axes horizontally (left=180°, right=0°)
+    // This creates a proper diamond shape instead of a collapsed vertical line
+    const getAngle = (index: number, total: number) => {
+        if (total === 2) {
+            return index === 0 ? Math.PI : 0
+        }
+        return index * ((2 * Math.PI) / total) - Math.PI / 2
+    }
 
     const colors = [
-        "#3b82f6", // Blue
-        "#ef4444", // Red
-        "#10b981", // Green
-        "#f59e0b", // Amber
-        "#8b5cf6", // Purple
-        "#06b6d4", // Cyan
-        "#f97316", // Orange
-        "#84cc16", // Lime
-        "#ec4899", // Pink
-        "#6366f1", // Indigo
+        "#3b82f6",
+        "#ef4444",
+        "#10b981",
+        "#f59e0b",
+        "#8b5cf6",
+        "#06b6d4",
+        "#f97316",
+        "#84cc16",
+        "#ec4899",
+        "#6366f1",
     ]
 
     const axisPoints = dimensions.map((_, index) => {
-        const angle = index * angleStep - Math.PI / 2
+        const angle = getAngle(index, dimensions.length)
         return {
             x: center.x + radius * Math.cos(angle),
             y: center.y + radius * Math.sin(angle),
@@ -62,15 +66,14 @@ export function DatasetSpiderChartFlexible({
         }
     })
 
-    // Helper function to get dimension score from data
     const getDimensionScore = (modelData: any, dimension: string): number => {
         return modelData[dimension] || 0
     }
 
     return (
-        <div className="flex justify-center items-center">
-            <div className="flex items-start gap-6">
-                <svg width={svgWidth} height={svgHeight} className="border rounded bg-white">
+        <div className="flex flex-col items-center w-full">
+            <div className="flex items-start gap-6 w-full justify-center overflow-x-auto">
+                <svg width={svgWidth} height={svgHeight} className="border rounded bg-white shadow-sm flex-shrink-0">
                     {/* Grid circles */}
                     {[0.2, 0.4, 0.6, 0.8, 1.0].map((scale) => (
                         <circle
@@ -84,17 +87,28 @@ export function DatasetSpiderChartFlexible({
                         />
                     ))}
 
-                    {/* Axis lines */}
-                    {axisPoints.map((point, index) => (
-                        <line key={index} x1={center.x} y1={center.y} x2={point.x} y2={point.y} stroke="#e5e7eb" strokeWidth="1" />
-                    ))}
+                    {/* Full horizontal axis line for 2D */}
+                    {dimensions.length === 2 ? (
+                        <line
+                            x1={center.x - radius}
+                            y1={center.y}
+                            x2={center.x + radius}
+                            y2={center.y}
+                            stroke="#d1d5db"
+                            strokeWidth="1.5"
+                        />
+                    ) : (
+                        axisPoints.map((point, index) => (
+                            <line key={index} x1={center.x} y1={center.y} x2={point.x} y2={point.y} stroke="#e5e7eb" strokeWidth="1" />
+                        ))
+                    )}
 
-                    {/* Data for each selected model */}
+                    {/* Data polygons for each model */}
                     {selectedModels.map((model, modelIndex) => {
                         if (!data[model]) return null
 
                         const points = dimensions.map((dim, index) => {
-                            const angle = index * angleStep - Math.PI / 2
+                            const angle = getAngle(index, dimensions.length)
                             const score = getDimensionScore(data[model], dim)
                             const r = score * radius
                             return {
@@ -110,61 +124,66 @@ export function DatasetSpiderChartFlexible({
 
                         return (
                             <g key={model}>
-                                {/* Data polygon */}
-                                <path d={pathData} fill={`${color}30`} stroke={color} strokeWidth="2" />
-
-                                {/* Data points */}
+                                <path d={pathData} fill={`${color}25`} stroke={color} strokeWidth="2.5" />
                                 {points.map((point, index) => (
-                                    <circle key={index} cx={point.x} cy={point.y} r="4" fill={color} />
+                                    <circle key={index} cx={point.x} cy={point.y} r="5" fill={color} stroke="white" strokeWidth="1.5" />
                                 ))}
                             </g>
                         )
                     })}
 
-                    {/* Labels with improved positioning */}
+                    {/* Axis labels */}
                     {axisPoints.map((point, index) => {
                         const dimension = dimensions[index]
-
                         const displayLabel = getDimensionAbbreviation(dimension)
+                        const fullName = getDimensionDisplayName(dimension)
 
-                        // Calculate text anchor and positioning based on angle
-                        let textAnchor = "middle"
+                        let textAnchor: "start" | "middle" | "end" = "middle"
                         let dx = 0
                         let dy = 0
 
-                        // Adjust positioning based on quadrant
-                        const normalizedAngle = (point.angle + Math.PI * 2) % (Math.PI * 2)
-
-                        if (normalizedAngle > Math.PI * 0.25 && normalizedAngle < Math.PI * 0.75) {
-                            // Bottom quadrant
-                            textAnchor = "middle"
-                            dy = 15
-                        } else if (normalizedAngle > Math.PI * 0.75 && normalizedAngle < Math.PI * 1.25) {
-                            // Left quadrant
-                            textAnchor = "end"
-                            dx = -10
-                        } else if (normalizedAngle > Math.PI * 1.25 && normalizedAngle < Math.PI * 1.75) {
-                            // Top quadrant
-                            textAnchor = "middle"
-                            dy = -10
+                        if (dimensions.length === 2) {
+                            if (index === 0) {
+                                textAnchor = "end"
+                                dx = -14
+                            } else {
+                                textAnchor = "start"
+                                dx = 14
+                            }
                         } else {
-                            // Right quadrant
-                            textAnchor = "start"
-                            dx = 10
+                            const normalizedAngle = (point.angle + Math.PI * 2) % (Math.PI * 2)
+                            if (normalizedAngle > Math.PI * 0.25 && normalizedAngle < Math.PI * 0.75) {
+                                textAnchor = "middle"; dy = 15
+                            } else if (normalizedAngle > Math.PI * 0.75 && normalizedAngle < Math.PI * 1.25) {
+                                textAnchor = "end"; dx = -10
+                            } else if (normalizedAngle > Math.PI * 1.25 && normalizedAngle < Math.PI * 1.75) {
+                                textAnchor = "middle"; dy = -10
+                            } else {
+                                textAnchor = "start"; dx = 10
+                            }
                         }
 
                         return (
-                            <text
-                                key={index}
-                                x={point.labelX + dx}
-                                y={point.labelY + dy}
-                                textAnchor={textAnchor}
-                                dominantBaseline="middle"
-                                className="text-xs font-medium fill-gray-700"
-                                style={{ fontSize: "12px" }}
-                            >
-                                {displayLabel}
-                            </text>
+                            <g key={index}>
+                                <text
+                                    x={point.labelX + dx}
+                                    y={point.labelY + dy - 10}
+                                    textAnchor={textAnchor}
+                                    dominantBaseline="middle"
+                                    style={{ fontSize: "15px", fontWeight: "700", fill: "#1f2937" }}
+                                >
+                                    {displayLabel}
+                                </text>
+                                <text
+                                    x={point.labelX + dx}
+                                    y={point.labelY + dy + 10}
+                                    textAnchor={textAnchor}
+                                    dominantBaseline="middle"
+                                    style={{ fontSize: "11px", fill: "#6b7280" }}
+                                >
+                                    {fullName}
+                                </text>
+                            </g>
                         )
                     })}
 
@@ -174,33 +193,43 @@ export function DatasetSpiderChartFlexible({
                             key={scale}
                             x={center.x + 5}
                             y={center.y - radius * scale}
-                            className="text-xs fill-gray-500"
-                            style={{ fontSize: "10px" }}
+                            style={{ fontSize: "10px", fill: "#9ca3af" }}
                         >
                             {(scale * 100).toFixed(0)}%
                         </text>
                     ))}
                 </svg>
 
-                {/* Enhanced Legend */}
-                <div className="space-y-4 min-w-[200px]">
-                    <h4 className="font-medium text-gray-700 text-sm">Models:</h4>
-                    {selectedModels.map((model, index) => (
-                        <div key={model} className="flex items-center gap-2">
-                            <div className="w-4 h-4 rounded" style={{ backgroundColor: colors[index % colors.length] }} />
-                            <span className="text-sm text-gray-700">{model}</span>
-                        </div>
-                    ))}
+                {/* Legend */}
+                <div className="space-y-4 min-w-[200px] pt-4">
+                    <h4 className="font-semibold text-gray-700 text-sm uppercase tracking-wide">Models</h4>
+                    <div className="space-y-2">
+                        {selectedModels.map((model, index) => (
+                            <div key={model} className="flex items-center gap-2">
+                                <div className="w-4 h-4 rounded flex-shrink-0" style={{ backgroundColor: colors[index % colors.length] }} />
+                                <span className="text-sm text-gray-700">{model}</span>
+                            </div>
+                        ))}
+                    </div>
 
                     <div className="mt-4 pt-4 border-t border-gray-200">
-                        <h4 className="font-medium text-gray-700 text-sm mb-2">Dimensions:</h4>
-                        <div className="text-xs text-gray-600 space-y-1">
+                        <h4 className="font-semibold text-gray-700 text-sm uppercase tracking-wide mb-2">Dimensions</h4>
+                        <div className="text-xs text-gray-600 space-y-2">
                             {selectedDimensions.map((dim) => (
                                 <div key={dim} className="flex gap-2">
-                                    <strong>{getDimensionAbbreviation(dim)}:</strong>
+                                    <strong className="text-gray-800 min-w-[28px]">{getDimensionAbbreviation(dim)}:</strong>
                                     <span>{getDimensionDisplayName(dim)}</span>
                                 </div>
                             ))}
+                        </div>
+                    </div>
+
+                    <div className="mt-4 pt-4 border-t border-gray-200">
+                        <h4 className="font-semibold text-gray-700 text-sm uppercase tracking-wide mb-2">Score Scale</h4>
+                        <div className="text-xs text-gray-500 space-y-1">
+                            <div>Yes = 1.0</div>
+                            <div>To some extent = 0.5</div>
+                            <div>No = 0.0</div>
                         </div>
                     </div>
                 </div>

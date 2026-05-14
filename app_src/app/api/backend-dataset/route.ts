@@ -135,7 +135,9 @@ export async function GET() {
         })
 
         const tutors = Array.from(tutorsSet)
-        const dimensions = Array.from(dimensionsSet)
+        const dimensions = Array.from(dimensionsSet).filter((dim) => 
+            dim === "Mistake_Identification" || dim === "Providing_Guidance"
+        )
 
         console.log("[v0] Extracted data:", {
             tutorCount: tutors.length,
